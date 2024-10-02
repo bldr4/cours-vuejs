@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <!-- rendu déclaratif -->
+     <!-- interpolation -->
+        <p>du text {{message}} encore du text </p>
+        <!-- la directive v-text -->
+        <!-- <p v-text="message">Encore du texte</p> -->
+        <!-- la directive v-html -->
+        <p v-html="htmlRaw"></p>
+
+    <!-- Les methods -->
+     <p>{{ sayHello() }}</p>
+     <!-- computed -->
+     <p>Le résultat de mon addition est : {{ addition }}</p>
+
+     <!-- methods vs computed  -->
+     <button v-on:click="compteurA++">Augmente trigger</button>
+     <button v-on:click="compteurA--">baisse trigger</button>
+     <p>{{compteurA}}</p>
+     <p>{{checkValByMethods()}} // {{ checkValByCmputed }}</p>
+
+     <button v-on:click="compteurB++">Augmente</button>
+     <button v-on:click="compteurB--">baisse</button>
+     <p>{{compteurB}}</p>
+     <br>
+     <br>
+     <br>
+
+
+
+     <!-- Les directives -->
+    <!-- v-bind relier un attribut html avec un élement de l'instance vue -->
+     <a v-bind:href="URL">Vers google</a>
+     <br>
+     <!--  syntaxe simplifiée -->
+     <a :href="URL">Vers google</a><br>
+     <!-- autres exmples -->
+        <img :src="image" alt="image">
+        <div v-bind="objectOfAttr"></div>
+        <input type="text" :disabled="show">
+        <br>
+
+    <!-- v-on déclarer des évènements dans le dom -->
+     <button v-on:click="compteur++">Augmente</button>
+      <!--  syntaxe simplifiée -->
+     <button @click="compteur--">Baisse</button>
+
+     <p>{{compteur}}</p>
+
+     <!-- même chose avec des fonctions -->
+      <!-- pas de computed sur les event  -->
+        <button @click="augmente()">Augmente</button>
+        <button @click="baisse()">Baisse</button>
+<br>
+<br>
+        <!-- Autre exemple  -->
+        <canvas v-on:mousemove="coords" width="300" height="300"></canvas><br>
+        <p>coordonnées sur x : {{ x }} / coordonnées sur y : {{ y }}</p>
+
+        <!--  Les modificateurs d'évenements  -->
+          <!-- stop : empecher la propagation d'évenements -->
+          <div v-on:click="cliqued()">
+            <p>Lorem ipsum dolor sit amet.
+                <button v-on:click.stop="cliqued()">cliquez ici </button>
+            </p>
+          </div>
+          <!-- prevent : empecher le comportement par defaut d'un formulaire -->
+           <form action="https://google.com" v-on:submit.prevent="onSubmit">
+                <input type="text">
+                <button type="submit">Envoyer</button>
+           </form>
+
+    <!-- v-model: binder un champ de formulaire avec une prop de données  -->
+     <!--  c'est un binding bidirectionel -->
+    <input type="text" v-model="inputVal">
+    <p>{{ inputVal }}</p>
+
+
+    <!-- binding css  -->
+     <!-- changer la valeur d'un booleen via un event -->
+     <button v-on:click="toggleColor = toggleColor? false :true">Toggle la couleur</button>
+     <!-- technique spécifique à vueJS -->
+      <!-- toggleColor = à l'inverse de sa valeur -->
+     <button v-on:click="toggleColor = !toggleColor">Toggle la couleur</button>
+     <br>
+     {{ toggleColor }}
+
+     <!--  Donner la classe red si la prop de données toggleColor est true  -->
+     <div class="box" v-bind:class="toggleColor ? 'red' : ''"></div>
+     <!-- Equivalent syntaxe spécifique à vueJS  -->
+      <!-- injecter la classe red si toggleColor est à true  -->
+     <div class="box" v-bind:class="{red : toggleColor}"></div>
+      <!-- injecter la classe red si toggleColor est à false  -->
+     <div class="box" v-bind:class="{red : !toggleColor}"></div>
+     <!-- injecter un objet en tant que classe  -->
+    <div v-bind:class="objCss"></div>
+    <!--  combiner binding de classe et d'objet  -->
+    <div v-bind:class="[objCss, 'bordure']"></div>
+    <!-- binding sur l'attr style -->
+     <div class='box' :style="objCss2"></div>
+
+<br>
+     <!--  Les structures conditionelles  -->
+       <button v-on:click="toggleText = !toggleText">Toggle text</button>
+       <!-- v-show : change la prop display de l'élement  -->
+       <p v-show="toggleText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt temporibus exercitationem sit voluptates quos commodi corporis qui, quas aliquid consequatur.</p>
+       <!-- v-if : supprime l'element du DOM  -->
+       <span v-if="toggleText">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi, laboriosam possimus impedit facere adipisci rem dolorum minima ipsum dolorem facilis.</span>
+     
+       <!--  la structure du v-if -->
+
+       <button @click="number++">Augmente</button>
+       <button @click="number--">Baisse</button>
+       <p>{{ number }}</p>
+       <p v-if="number ===0">Text1</p>
+       <p v-else-if="number ===1">Text2</p>
+       <p v-else-if="number ===2">Text3</p>
+       <p v-else>Text4</p>
+
+       <!--  Autre exemple d'utilisation de la structure v-if -->
+         <!-- La structure conditionnelle est délimitée par la balise dans laquelle est est définie -->
+<hr>
+<button v-on:click="toggleText = !toggleText">Toggle text</button>
+<br>
+<!-- La balise template n'existe pas dans le DOM, elle est utile pour créer des structures conditionnelles sur plusieurs balises  -->
+       <template v-if="toggleText" >
+            <img src="https://picsum.photos/200/200" alt="">
+            <br>
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum, minus.</span>
+            <br>
+            <button>Cliquez ici</button>
+       </template>
+
+
+       <!-- Les boucles v-for -->
+        <!-- tableau de nombre - afichage des valeurs  -->
+        <ul>
+            <li v-for="nb in arr">{{nb}}</li>
+        </ul>
+           <!-- tableau alphabétique - afichage des indices et valeurs  -->
+        <ul>
+            <li v-for="(val, index) in arrFruits">{{ index + 1 }} - {{ val }}</li>
+        </ul>
+           <!-- objet - afichage des indices et valeurs  -->
+        <ul>
+            <li v-for="(value, ind) in arrUsers"> {{ind}} - {{value}}</li>
+            <!-- vous pouvez aussi  -->
+            <li v-for="(value, ind) of arrUsers"> {{ind}} - {{value}}</li>
+        </ul>
+
+        <!--  !!!! Structure de boucle à réaliser systématiquement !!!!  -->
+          <!-- l'attribut :key permet de mettre à jour plus rapidement les données, on fait passer à cet attribut une propriétée unique de l'objet ou du tableau sur lequel on boucle -->
+          <ul>
+            <li v-for="prod in arrProd" :key="prod.nom">
+                <hr>
+                <img v-bind:src="prod.img" :alt="prod.nom">
+                <h3>{{ prod.nom }}</h3>
+                <p>Prix: {{ prod.prix }}</p>
+            </li>
+          </ul>
+
+</div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
