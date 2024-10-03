@@ -6,7 +6,7 @@
                      <slot></slot>
 
                      <!-- Slot nommé pour structurer un élément  -->
-                      <header>
+                 
                         <div v-if="$slots.header">
                             <slot name="header">
                             </slot>
@@ -22,7 +22,7 @@
                             </slot>
                         </div>
                         
-                      </header>
+                     
                 </div>
             </div>
          </div>

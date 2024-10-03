@@ -36,6 +36,7 @@ import UserTable from '@/components/UserTable.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import ModalUser from '@/components/ModalUser.vue';
 import ButtonUser from '@/components/ButtonUser.vue';
+// On importe les helpers avant de pouvoir les utiliser
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 
     export default {
@@ -51,25 +52,31 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
             }
         },
         methods: {
-            ...mapMutations(['setShowConfirmDeleteModal', 'setUserToDelete',  ]), 
-            ...mapActions(['confirmDelete']),
+            // Fonctions helpers permmettant d'appeler les éléments du store plus facilement, !!! il faut importer les helpers avant des les utiliser !!!
+            // on importe les mutations et les actions dans les méthods 
+                ...mapMutations(['setShowConfirmDeleteModal', 'setUserToDelete',  ]), 
+                ...mapActions(['confirmDelete']),
 
-            promptDeleteUser(userId) {
-            this.setUserToDelete(userId);
-            this.setShowConfirmDeleteModal(true); 
+                promptDeleteUser(userId) {
+                    this.setUserToDelete(userId);
+                    this.setShowConfirmDeleteModal(true); 
+                },
 
-            },
+                confirmDeleteUser() {
+                    this.confirmDelete();
+                },
 
-            confirmDeleteUser() {
-            this.confirmDelete();
-            },
-
-            cancelDeleteUser() {
-           this.setShowConfirmDeleteModal(false); 
-            },
+                cancelDeleteUser() {
+                     this.setShowConfirmDeleteModal(false); 
+                },
             },
         computed:{
+            // les states et les getters sont importés dans les computed
             ...mapState(['showConfirmDeleteModal', 'showDeletionModal']),
+            //  autre manière d'importer les states 
+            // loadModaConfirmBoolean(){
+            //     return this.$store.state.showConfirmDeleteModal;
+            // },
             ...mapGetters(['filteredUsers']) 
         },
         mounted(){

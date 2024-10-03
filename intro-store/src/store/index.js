@@ -1,25 +1,31 @@
 import { createStore } from 'vuex';
 
+
+function getLastUserId(){
+  let lastId = localStorage.getItem('lastId') || 0;  
+  return lastId ? parseInt(lastId) : 0;
+}
 const store = createStore({
     state:{
         users: [],
+        lasterUserId:getLastUserId(),
         filteredUsers: [],
         searchQuery: '',
-
+// Booleens pour gérer l'affichage des modals
         showConfirmDeleteModal: false, 
         showDeletionModal: false,
         showUserDetailsModal: false,
+        showModalAdd: false,
 
         userToDeleteId: null, 
         currentUser: {}, 
     },
     mutations:{
     // Permet de mettre à jour le state 
+    // Pour initialiser filteredUsers
     setUsers(state, users) {
         state.users = users;
         state.filteredUsers = users; 
-
-    // Pour initialiser filteredUsers
       },
       setSearchQuery(state, query) {
         state.searchQuery = query;
@@ -34,6 +40,9 @@ const store = createStore({
         },
         setShowConfirmDeleteModal(state, flag) {
           state.showConfirmDeleteModal = flag;
+        },
+        setShowModalAdd(state, flag) {
+          state.showModalAdd = flag;
         },
 
         setCurrentUser(state, user) {
@@ -54,6 +63,16 @@ const store = createStore({
               state.userToDeleteId = null;
             }
           },
+          // ajouter un utilisateur
+          addUser(state, user){
+            state.lasterUserId += 1;
+            user.id = state.lasterUserId;
+            state.users.push(user);
+
+            // on push dans le local storage 
+            localStorage.setItem(`user_${user.id}`, JSON.stringify(user));
+            localStorage.setItem('lastId', state.lasterUserId);
+          }
   
 
     },

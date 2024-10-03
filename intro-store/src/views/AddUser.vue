@@ -19,6 +19,7 @@
 import UserForm from '@/components/UserForm.vue';
 import ButtonUser from '@/components/ButtonUser.vue';
 import ModalUser from '@/components/ModalUser.vue';
+import { mapMutations } from 'vuex';
 
     export default {
         components:{
@@ -35,6 +36,7 @@ import ModalUser from '@/components/ModalUser.vue';
             }
         },
         methods:{
+            ...mapMutations(['addUser']),
             addUser(){
           
                 if(!this.userData.firstName || !this.userData.lastName || !this.userData.email || !this.userData.password){
@@ -54,12 +56,7 @@ import ModalUser from '@/components/ModalUser.vue';
                     setTimeout(() => { this.showModalConfirmation=false;},2000);
                     return;
                 }
-                // récupérer le dernier id dans la localStorage
-                let lastId = localStorage.getItem('lastId') || 0;    
-                 lastId = parseInt(lastId) + 1;
-                 this.userData.id = lastId;
-                localStorage.setItem(`user_${lastId}`, JSON.stringify(this.userData));
-                localStorage.setItem('lastId', lastId);
+                this.$store.commit('addUser',this.userData);
 
                 this.isError=false;
                 this.showModalConfirmation=true;
